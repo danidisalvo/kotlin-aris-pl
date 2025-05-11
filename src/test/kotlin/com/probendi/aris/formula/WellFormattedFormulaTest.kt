@@ -163,7 +163,7 @@ class WellFormattedFormulaTest {
 
                 Arguments.of(
                     Disjunction(p, Negation(p)), true
-                ),  // ((P ∧ (Q ∨ R)) ∨ (¬P ∧ (¬Q ∨ ¬R)))
+                ),
 
                 Arguments.of(
                     Disjunction(
@@ -178,8 +178,9 @@ class WellFormattedFormulaTest {
                                 notR
                             )
                         )
-                    ), false
-                ),  // (¬(¬(P ∧ Q) ∧ ¬(P ∧ R)) ∨ ¬(P ∧ (Q ∨ R)))
+                    ),   // ((P ∧ (Q ∨ R)) ∨ (¬P ∧ (¬Q ∨ ¬R)))
+                    false
+                ),
 
                 Arguments.of(
                     Disjunction(
@@ -205,7 +206,8 @@ class WellFormattedFormulaTest {
                                 Disjunction(q, r)
                             )
                         )
-                    ), true
+                    ),   // (¬(¬(P ∧ Q) ∧ ¬(P ∧ R)) ∨ ¬(P ∧ (Q ∨ R)))
+                    true
                 )
             )
         }

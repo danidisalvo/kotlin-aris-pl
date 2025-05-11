@@ -23,49 +23,52 @@ class ArgumentTest {
 
     internal class ValidateArgumentsProvider : ArgumentsProvider {
         override fun provideArguments(context: ExtensionContext): Stream<out Arguments> {
-            return Stream.of( // ¬P, ¬Q, ¬R ∴ S
+            return Stream.of(
                 Arguments.of(
-                    Argument(s, notP, notQ, notR), false
-                ),  // (P ∧ ¬Q), (R ∧ ¬S) ∴ (Q ∨ S)
+                    Argument(s, notP, notQ, notR), // ¬P, ¬Q, ¬R ∴ S
+                    false
+                ),
 
                 Arguments.of(
                     Argument(
                         Disjunction(q, s),
                         Conjunction(p, notQ),
                         Conjunction(r, notS)
-                    ),
+                    ), // (P ∧ ¬Q), (R ∧ ¬S) ∴ (Q ∨ S)
                     false
-                ),  // (P ∧ ¬Q) ∴ ¬(Q ∧ R)
+                ),
 
                 Arguments.of(
                     Argument(
                         Negation(Conjunction(q, r)),
                         Conjunction(p, notQ)
-                    ),
+                    ), // (P ∧ ¬Q) ∴ ¬(Q ∧ R)
                     true
-                ),  // (P ∨ Q) ∴ P
+                ),
 
                 Arguments.of(
                     Argument(
                         p, Disjunction(p, q)
-                    ), false
-                ),  // P, ¬(P ∧ ¬Q) ∴ Q
+                    ), // (P ∨ Q) ∴ P
+                    false
+                ),
 
                 Arguments.of(
                     Argument(
                         q, p,
                         Negation(Conjunction(p, notQ))
-                    ), true
-                ),  // (P → Q), (Q → R) ∴ (P → R)
+                    ), // P, ¬(P ∧ ¬Q) ∴ Q
+                    true
+                ),
 
                 Arguments.of(
                     Argument(
                         Conditional(p, r),
                         Conditional(p, q),
                         Conditional(q, r)
-                    ),
+                    ), // (P → Q), (Q → R) ∴ (P → R)
                     true
-                ),  // ((P ∧ Q) ∨ R) ∴ ¬(¬P ∨ ¬R)
+                ),
 
                 Arguments.of(
                     Argument(
@@ -74,9 +77,9 @@ class ArgumentTest {
                             Conjunction(p, q),
                             r
                         )
-                    ),
+                    ), // ((P ∧ Q) ∨ R) ∴ ¬(¬P ∨ ¬R)
                     false
-                ),  // ((P ∧ Q) ∧ R) ∴ (Q ∧ (R ∧ P))
+                ),
 
                 Arguments.of(
                     Argument(
@@ -88,18 +91,18 @@ class ArgumentTest {
                             Conjunction(p, q),
                             r
                         )
-                    ),
+                    ), // ((P ∧ Q) ∧ R) ∴ (Q ∧ (R ∧ P))
                     true
-                ),  // ¬(P ∧ ¬Q), ¬(Q ∧ R) ∴ ¬(R ∧ ¬P)
+                ),
 
                 Arguments.of(
                     Argument(
                         Negation(Conjunction(r, notP)),
                         Negation(Conjunction(p, notQ)),
                         Negation(Conjunction(q, r))
-                    ),
+                    ), // ¬(P ∧ ¬Q), ¬(Q ∧ R) ∴ ¬(R ∧ ¬P)
                     false
-                ),  // (¬P ∨ R), (P ∨ Q), ¬(Q ∧ ¬S) ∴ (R ∨ S)
+                ),
 
                 Arguments.of(
                     Argument(
@@ -107,9 +110,9 @@ class ArgumentTest {
                         Disjunction(notP, r),
                         Disjunction(p, q),
                         Negation(Conjunction(q, notS))
-                    ),
+                    ), // (¬P ∨ R), (P ∨ Q), ¬(Q ∧ ¬S) ∴ (R ∨ S)
                     true
-                ),  // ((P → Q) → (R → ¬S)), (¬R → (Q ∧ P1)), (¬P → P1) ∴ (S → P1)
+                ),
 
                 Arguments.of(
                     Argument(
@@ -129,7 +132,7 @@ class ArgumentTest {
                             Conjunction(q, p1)
                         ),
                         Conditional(notP, p1)
-                    ),
+                    ), // ((P → Q) → (R → ¬S)), (¬R → (Q ∧ P1)), (¬P → P1) ∴ (S → P1)
                     false
                 )
             )
